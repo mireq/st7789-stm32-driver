@@ -5,8 +5,8 @@
 #include <st7789.h>
 
 
-typedef int float_t;
-#define FLOAT_BITS 14
+typedef int64_t float_t;
+#define FLOAT_BITS 20
 #define FLOAT_FACT ((float_t)1 << FLOAT_BITS)
 #define MANDELBROT_MAXITER 1024
 
@@ -325,10 +325,10 @@ void demoMandelbrotDisplay(float_t realmin, float_t imagmin, float_t realmax, fl
 	uint16_t lineBuffer[ST7789_LCD_WIDTH * 2];
 	uint16_t *buf = (uint16_t *)(&lineBuffer);
 	uint16_t colormap[MANDELBROT_MAXITER];
-	for (size_t i = 0; i < MANDELBROT_MAXITER; ++i) {
+	for (int i = 0; i < MANDELBROT_MAXITER; ++i) {
 		colormap[i] = st7789_RGBToColor(
-			(MANDELBROT_MAXITER - i - 1) * 256 / MANDELBROT_MAXITER,
-			(i * 16) * 256 / MANDELBROT_MAXITER,
+			i < 64 ? (MANDELBROT_MAXITER - i - 1) * 256 / MANDELBROT_MAXITER : 0,
+			i < 64 ? (i * 16) * 256 / MANDELBROT_MAXITER : (i < 319 ? 319 - i : 0),
 			(i * 4) * 256 / MANDELBROT_MAXITER
 		);
 	}
@@ -377,13 +377,12 @@ void demoMandelbrot() {
 	float imagMin = -1.35;
 	float realMax = 0.7;
 	float imagMax = 1.35;
+	const float realFinalMin = -0.749;
+	const float imagFinalMin = 0.125;
+	const float realFinalMax = -0.739;
+	const float imagFinalMax = 0.135;
 
-	const float realFinalMin = -0.75;
-	const float imagFinalMin = 0.12;
-	const float realFinalMax = -0.73;
-	const float imagFinalMax = 0.14;
-
-	for (size_t i = 8; i < 24; ++i) {
+	for (size_t i = 8; i < 16; ++i) {
 		demoMandelbrotDisplayFast(realMin * FLOAT_FAST_FACT, imagMin * FLOAT_FAST_FACT, realMax * FLOAT_FAST_FACT, imagMax * FLOAT_FAST_FACT, i);
 		st7789_WaitNanosecs(20000);
 	}
@@ -392,11 +391,11 @@ void demoMandelbrot() {
 		realMax = (realMax * 9 + realFinalMax) / 10;
 		imagMin = (imagMin * 9 + imagFinalMin) / 10;
 		imagMax = (imagMax * 9 + imagFinalMax) / 10;
-		demoMandelbrotDisplayFast(realMin * FLOAT_FAST_FACT, imagMin * FLOAT_FAST_FACT, realMax * FLOAT_FAST_FACT, imagMax * FLOAT_FAST_FACT, 32);
+		demoMandelbrotDisplayFast(realMin * FLOAT_FAST_FACT, imagMin * FLOAT_FAST_FACT, realMax * FLOAT_FAST_FACT, imagMax * FLOAT_FAST_FACT, 16 + i);
 	}
 
 	demoMandelbrotDisplay(realFinalMin * FLOAT_FACT, imagFinalMin * FLOAT_FACT, realFinalMax * FLOAT_FACT, imagFinalMax * FLOAT_FACT);
-	st7789_WaitNanosecs(1000000);
+	st7789_WaitNanosecs(4000000);
 }
 
 
