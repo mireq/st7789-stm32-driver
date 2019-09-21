@@ -34,7 +34,7 @@ def write0(message):
 def writePixels(message):
 	inferior = gdb.inferiors()[0]
 	batch, size = struct.unpack('<HH', inferior.read_memory(message, 4).tobytes())
-	with open('example/image.png.dat', 'rb') as fp:
+	with open('image.png.dat', 'rb') as fp:
 		fp.seek(batch * size * 2)
 		inferior.write_memory(message, fp.read(size * 2));
 	gdb.execute('continue')

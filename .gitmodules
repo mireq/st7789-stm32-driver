@@ -1,0 +1,3 @@
+[submodule "vendor/uGUI"]
+	path = vendor/uGUI
+	url = https://github.com/achimdoebler/UGUI.git

@@ -37,7 +37,7 @@ TARGET = $(BUILD_DIR)$(PROJECT_NAME)
 VPATH = ${SOURCE_DIR}
 
 
-SOURCES = $(shell $(FIND) ${SOURCE_DIR} -iregex ".*\.\\(c\\|s\\|cpp\\)" -printf "%P\n")
+SOURCES = $(shell $(FIND) -L ${SOURCE_DIR} -iregex ".*\.\\(c\\|s\\|cpp\\)" -printf "%P\n")
 objects = $(patsubst %.cpp,%.o,$(patsubst %.c,%.o,$(patsubst %.s,%.o,$(SOURCES))))
 OBJECTS = $(addprefix $(BUILD_DIR), $(objects))
 LINKERS = $(shell $(FIND) ${SOURCE_DIR} -name '*.ld')
@@ -71,11 +71,3 @@ $(BUILD_DIR)%.o: %.s Makefile config.mk
 
 clean:
 	$(RM) $(BUILD_DIR)*
-
-
-run: $(TARGET).elf example/image.png.dat
-	$(GDB) --command=run.gdb -nh -q --batch $(TARGET).elf
-
-
-example/image.png.dat: example/image.png
-	python example/convert_image.py example/image.png
