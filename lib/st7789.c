@@ -176,6 +176,8 @@ void st7789_Init_1_3_LCD(void) {
 		// Gamma corection
 		//{ST7789_CMD_PVGAMCTRL, 0, 14, (const uint8_t *)"\xd0\x08\x11\x08\x0c\x15\x39\x33\x50\x36\x13\x14\x29\x2d"},
 		//{ST7789_CMD_NVGAMCTRL, 0, 14, (const uint8_t *)"\xd0\x08\x10\x08\x06\x06\x39\x44\x51\x0b\x16\x14\x2f\x31"},
+		// Little endian
+		{ST7789_CMD_RAMCTRL, 0, 2, (const uint8_t *)"\x00\x08"},
 		{ST7789_CMD_DISPON, 100, 0, NULL},                  // Display on
 		{ST7789_CMD_SLPOUT, 100, 0, NULL},                  // Sleep out
 		{ST7789_CMD_TEON, 0, 0, NULL},                      // Tearing line effect on
@@ -240,5 +242,5 @@ void st7789_Clear(uint16_t color) {
 
 
 uint16_t st7789_RGBToColor(uint8_t r, uint8_t g, uint8_t b) {
-	return (((uint16_t)r >> 3) << 3) | (((uint16_t)b >> 3) << 8) | (((uint16_t)g >> 2) << 13) | ((uint16_t)g >> 5);
+	return (((uint16_t)r >> 3) << 11) | (((uint16_t)g >> 2) << 5) | ((uint16_t)b >> 3);
 }

@@ -33,7 +33,7 @@ def main():
 	im.thumbnail(OUTPUT_SIZE, Image.ANTIALIAS)
 
 	with open(sys.argv[1] + '.dat', 'wb') as image_fp:
-		packed_pixel = struct.Struct(">H")
+		packed_pixel = struct.Struct("<H")
 		pixels = list(im.getdata())
 		for pixel in pixels:
 			r, g, b = pixel

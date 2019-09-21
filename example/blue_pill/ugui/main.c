@@ -75,8 +75,8 @@ void st7789_GPIOInit(void) {
 
 
 void UG_Driver_PushPixel(UG_COLOR color) {
-	st7789_WriteSpi(color >> 8);
-	st7789_WriteSpi(color & 0xff);
+	st7789_WriteDMA(&color, 2);
+	st7789_WaitForDMA();
 }
 
 
