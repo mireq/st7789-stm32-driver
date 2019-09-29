@@ -27,13 +27,13 @@ void st7789_Reset(void) {
 
 
 void st7789_StartCommand(void) {
-	st7789_WaitNanosecs(10); //  D/CX setup time
+	//st7789_WaitNanosecs(10); //  D/CX setup time
 	ST7789_DC_PORT->ODR &= ~ST7789_DC_PIN;
 }
 
 
 void st7789_StartData(void) {
-	st7789_WaitNanosecs(10); //  D/CX setup time
+	//st7789_WaitNanosecs(10); //  D/CX setup time
 	ST7789_DC_PORT->ODR |= ST7789_DC_PIN;
 }
 
