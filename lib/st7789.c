@@ -178,12 +178,17 @@ void st7789_Init_1_3_LCD(void) {
 		//{ST7789_CMD_NVGAMCTRL, 0, 14, (const uint8_t *)"\xd0\x08\x10\x08\x06\x06\x39\x44\x51\x0b\x16\x14\x2f\x31"},
 		// Little endian
 		{ST7789_CMD_RAMCTRL, 0, 2, (const uint8_t *)"\x00\x08"},
+		{ST7789_CMDLIST_END, 0, 0, NULL},                   // End of commands
+	};
+	st7789_RunCommands(initSequence);
+	st7789_Clear(0x0000);
+	const st7789_Command initSequence2[] = {
 		{ST7789_CMD_DISPON, 100, 0, NULL},                  // Display on
 		{ST7789_CMD_SLPOUT, 100, 0, NULL},                  // Sleep out
 		{ST7789_CMD_TEON, 0, 0, NULL},                      // Tearing line effect on
 		{ST7789_CMDLIST_END, 0, 0, NULL},                   // End of commands
 	};
-	st7789_RunCommands(initSequence);
+	st7789_RunCommands(initSequence2);
 }
 
 
