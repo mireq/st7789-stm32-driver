@@ -82,8 +82,8 @@ void UG_Driver_PushPixel(UG_COLOR color) {
 
 void UG_Driver_SetPixel(UG_S16 x, UG_S16 y, UG_COLOR color) {
 	st7789_SetWindow(x, y, x, y);
-	st7789_WriteSpi(color >> 8);
-	st7789_WriteSpi(color & 0xff);
+	st7789_WriteDMA(&color, 2);
+	st7789_WaitForDMA();
 	st7789_SetWindow(0, 0, ST7789_LCD_WIDTH, ST7789_LCD_HEIGHT);
 }
 
@@ -106,9 +106,6 @@ int main(void) {
 	st7789_GPIOInit();
 	st7789_Reset();
 	st7789_Init_1_3_LCD();
-
-	st7789_Clear(0xffff);
-	st7789_StartMemoryWrite();
 
 	UG_GUI gui;
 	UG_Init(&gui, UG_Driver_SetPixel, ST7789_LCD_WIDTH, ST7789_LCD_HEIGHT);
